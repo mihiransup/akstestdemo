@@ -41,9 +41,9 @@ stages:
     - script: |
         terraform validate -var-file=aks_conf.tfvars
       displayName: 'terraform validate'
-      inputs:
-        command: validate
-        workingDirectory: /opt/hostedtoolcache/terraform/0.12.6/x64
+      # inputs:
+        # command: validate
+      workingDirectory: /opt/hostedtoolcache/terraform/0.12.6/x64
  
 
 - stage: Deploy
