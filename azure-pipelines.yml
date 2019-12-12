@@ -24,7 +24,7 @@ stages:
         command: init
         workingDirectory: akstestdemo
         backendType: azurerm
-        backendServiceArm: 'AksTerraformSPN'
+        backendServiceArm: 'Azure SPN'
         backendAzureRmResourceGroupName: 'AksTerraform-test-demo'
         backendAzureRmStorageAccountName: 'storagetestdemoaks'
         backendAzureRmContainerName: 'tfstate'
