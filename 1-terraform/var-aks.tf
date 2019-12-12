@@ -1,11 +1,11 @@
 #KeyVault Resource Group and KeyVaultName
 variable "keyvault_rg" {
   type    = string
-  default = AksTerraform-RG
+  default = "AksTerraform-RG"
 }
 variable "keyvault_name" {
   type    = string
-  default = keyvaulttestingdemo
+  default = "keyvaulttestingdemo"
 }
 
 variable "azure_region" {
