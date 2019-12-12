@@ -31,24 +31,15 @@ stages:
     #     terraform init -backend-config="resource_group_name=AksTerraform-test-demo" -backend-config="storage_account_name=storagetestdemoaks" -backend-config="container_name=tfstate"
     #   workingDirectory: '$(Pipeline.Workspace)'
     #   displayName: 'Terraform init'  
-    - task: charleszipp.azure-pipelines-tasks-terraform.azure-pipelines-tasks-terraform-cli.TerraformCLI@0
-      displayName: 'terraform init'
-      inputs:
-        command: init
-        workingDirectory: 1-terraform
-        backendType: azurerm
+    - task: TerraformCLI@0
+       inputs:
+        command: 'init'
+        backendType: 'azurerm'
         backendServiceArm: 'test'
         backendAzureRmResourceGroupName: 'AksTerraform-test-demo'
         backendAzureRmStorageAccountName: 'storagetestdemoaks'
         backendAzureRmContainerName: 'tfstate'
-        backendAzureRmKey: 'demo.terraform.tfstate'
-    - task: charleszipp.azure-pipelines-tasks-terraform.azure-pipelines-tasks-terraform-cli.TerraformCLI@0
-    # - script: |
-    #     terraform validate -var-file=aks_conf.tfvars
-    #   displayName: 'terraform validate'
-      inputs:
-       command: validate
-       workingDirectory: /opt/hostedtoolcache/terraform/0.12.6/x64
+        backendAzureRmKey: 'terraform.tfstate'
  
 
 
