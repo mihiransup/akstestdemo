@@ -80,7 +80,7 @@ stages:
           
           - script: |
               terraform plan --var-file aks_conf.tfvars"
-            workingDirectory: '/opt/hostedtoolcache/terraform/0.12.6/x64'
+            # workingDirectory: '/opt/hostedtoolcache/terraform/0.12.6/x64'
             displayName: 'Terraform plan'  
           
           
@@ -96,7 +96,7 @@ stages:
           #     terraformVersion: 0.12.6
           - script: |
               terraform apply --var-file aks_conf.tfvars"
-            workingDirectory: ' /opt/hostedtoolcache/terraform/0.12.6/x64'
+            # workingDirectory: ' /opt/hostedtoolcache/terraform/0.12.6/x64'
             displayName: 'Terraform Apply'  
           
           
