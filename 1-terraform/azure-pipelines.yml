@@ -32,7 +32,7 @@ stages:
     #   workingDirectory: '$(Pipeline.Workspace)'
     #   displayName: 'Terraform init'  
     - task: TerraformCLI@0
-       inputs:
+      inputs:
         command: 'init'
         backendType: 'azurerm'
         backendServiceArm: 'test'
