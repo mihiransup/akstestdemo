@@ -14,15 +14,18 @@ stages:
     steps:
     - publish: 1-terraform
       artifact: terraform_out
-    - task: charleszipp.azure-pipelines-tasks-terraform.azure-pipelines-tasks-terraform-installer.TerraformInstaller@0
-      displayName: 'Use Terraform v0.12.6'
+    - task: JamiePhillips.Terraform.TerraformTool.TerraformTool@0
+      displayName: 'Use Terraform 0.12.6'
       inputs:
-        terraformVersion: 0.12.6
+        version: '0.12.6'
+    # - task: charleszipp.azure-pipelines-tasks-terraform.azure-pipelines-tasks-terraform-installer.TerraformInstaller@0
+    #   displayName: 'Use Terraform v0.12.6'
+    #   inputs:
+    #     terraformVersion: 0.12.6
     - script: |
-
-        /opt/hostedtoolcache/terraform/0.12.6/x64/terraform init -backend-config="resource_group_name=AksTerraform-test-demo" -backend-config="storage_account_name=storagetestdemoaks" -backend-config="container_name=tfstate"
-        workingDirectory: 'akstestdemo' 
-        displayName: 'Terraform init'  
+        terraform init -backend-config="resource_group_name=AksTerraform-test-demo" -backend-config="storage_account_name=storagetestdemoaks" -backend-config="container_name=tfstate"
+      workingDirectory: '$(terraform.path)'
+      displayName: 'Terraform init'  
     # - task: charleszipp.azure-pipelines-tasks-terraform.azure-pipelines-tasks-terraform-cli.TerraformCLI@0
     #   displayName: 'terraform init'
     #   inputs:
