@@ -1,0 +1,6 @@
+azure_region = "EastUS"
+kubernetes_version = "1.14.5"
+resource_group = "storagetestdemoaks"
+acr_name = "aksterraformacrdemo3"
+keyvault_rg = "storagetestdemoaks"
+keyvault_name = "keyvaultdemotest"
