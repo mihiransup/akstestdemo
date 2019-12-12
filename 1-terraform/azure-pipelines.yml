@@ -24,7 +24,7 @@ stages:
     #     terraformVersion: 0.12.6
     - script: |
         terraform init -backend-config="resource_group_name=AksTerraform-test-demo" -backend-config="storage_account_name=storagetestdemoaks" -backend-config="container_name=tfstate"
-      workingDirectory: '$(terraform.path)'
+      workingDirectory: ' /opt/hostedtoolcache/terraform/0.12.6/x64'
       displayName: 'Terraform init'  
     # - task: charleszipp.azure-pipelines-tasks-terraform.azure-pipelines-tasks-terraform-cli.TerraformCLI@0
     #   displayName: 'terraform init'
