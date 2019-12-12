@@ -24,7 +24,10 @@ stages:
     #     terraformVersion: 0.12.6
     - script: |
         pwd
-        ls -la
+        ls -la 
+        ls -la s/
+        ls -la b/
+        ls -la a/
         terraform init -backend-config="resource_group_name=AksTerraform-test-demo" -backend-config="storage_account_name=storagetestdemoaks" -backend-config="container_name=tfstate"
       workingDirectory: '$(Pipeline.Workspace)'
       displayName: 'Terraform init'  
