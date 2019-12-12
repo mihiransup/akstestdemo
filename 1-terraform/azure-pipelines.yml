@@ -37,11 +37,13 @@ stages:
     #     backendAzureRmStorageAccountName: 'storagetestdemoaks'
     #     backendAzureRmContainerName: 'tfstate'
     #     backendAzureRmKey: 'demo.terraform.tfstate'
-    - task: charleszipp.azure-pipelines-tasks-terraform.azure-pipelines-tasks-terraform-cli.TerraformCLI@0
+    # - task: charleszipp.azure-pipelines-tasks-terraform.azure-pipelines-tasks-terraform-cli.TerraformCLI@0
+    - script: |
+        terraform validate -var-file=aks_conf.tfvars
       displayName: 'terraform validate'
       inputs:
         command: validate
-        workingDirectory: akstestdemo
+        workingDirectory: /opt/hostedtoolcache/terraform/0.12.6/x64
  
 
 - stage: Deploy
