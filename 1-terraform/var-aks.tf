@@ -14,7 +14,7 @@ variable "azure_region" {
 #  Resource Group Name
 variable "resource_group" {
   type    = string
-  default = "AksTerraform-test-demo"
+  default = "AksTerraform-RG"
 }
 
 # AKS Cluster name
