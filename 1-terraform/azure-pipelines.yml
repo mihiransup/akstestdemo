@@ -2,7 +2,7 @@
 # Start with a minimal pipeline that you can customize to build and deploy your code.
 # Add steps that build, run tests, deploy, and more:
 # https://aka.ms/yaml
-#
+
 resources:
 - repo: self
 
@@ -14,35 +14,68 @@ stages:
     steps:
     - publish: 1-terraform
       artifact: terraform_out
-    - task: JamiePhillips.Terraform.TerraformTool.TerraformTool@0
-      displayName: 'Use Terraform 0.12.6'
+    - task: charleszipp.azure-pipelines-tasks-terraform.azure-pipelines-tasks-terraform-installer.TerraformInstaller@0
+      displayName: 'Use Terraform v0.12.6'
       inputs:
-        version: '0.12.6'
-    # - task: charleszipp.azure-pipelines-tasks-terraform.azure-pipelines-tasks-terraform-installer.TerraformInstaller@0
-    #   displayName: 'Use Terraform v0.12.6'
-    #   inputs:
-    #     terraformVersion: 0.12.6
-
-    # - script: |
-    #     pwd
-    #     ls -la 
-
-    #     cd s/1-terraform
-    #     terraform init -backend-config="resource_group_name=AksTerraform-test-demo" -backend-config="storage_account_name=storagetestdemoaks" -backend-config="container_name=tfstate"
-    #   workingDirectory: '$(Pipeline.Workspace)'
-    #   displayName: 'Terraform init'  
-    - task: TerraformCLI@0
+        terraformVersion: 0.12.6
+    - task: charleszipp.azure-pipelines-tasks-terraform.azure-pipelines-tasks-terraform-cli.TerraformCLI@0
+      displayName: 'terraform init'
       inputs:
-        command: 'init'
-        workingDirectory: '$(System.DefaultWorkingDirectory)/1-terraform'
-        backendType: 'azurerm'
-        backendServiceArm: 'test'
-        backendAzureRmResourceGroupName: 'AksTerraform-test-demo'
-        backendAzureRmStorageAccountName: 'storagetestdemoaks'
+        command: init
+        workingDirectory: 1-terraform
+        backendType: azurerm
+        backendServiceArm: 'Azure SPN'
+        backendAzureRmResourceGroupName: 'AKSTerraform-RG'
+        backendAzureRmStorageAccountName: 'storageaccounttesting'
         backendAzureRmContainerName: 'tfstate'
-        backendAzureRmKey: 'terraform.tfstate'
+        backendAzureRmKey: 'demo.terraform.tfstate'
+    - task: charleszipp.azure-pipelines-tasks-terraform.azure-pipelines-tasks-terraform-cli.TerraformCLI@0
+      displayName: 'terraform validate'
+      inputs:
+        command: validate
+        workingDirectory: 1-terraform
  
 
-
-
- 
+- stage: Deploy
+  jobs:
+    # track deployments on the environment
+  - deployment: Deploy_Terraform
+    pool:
+      vmImage: 'ubuntu-latest'
+    # creates an environment if it doesn’t exist
+    environment: 'DEV'
+    strategy:
+      # default deployment strategy
+      runOnce:
+        deploy:
+          steps:
+          # - download: current
+          #   artifact: terraform_out
+          - task: charleszipp.azure-pipelines-tasks-terraform.azure-pipelines-tasks-terraform-cli.TerraformCLI@0
+            displayName: 'terraform init'
+            inputs:
+              command: init
+              workingDirectory: $(Pipeline.Workspace)/terraform_out
+              backendType: azurerm
+              backendServiceArm: 'Azure SPN'
+              backendAzureRmResourceGroupName: 'AKSTerraform-RG'
+              backendAzureRmStorageAccountName: 'storageaccounttesting'
+              backendAzureRmContainerName: 'tfstate'
+              backendAzureRmKey: 'demo.terraform.tfstate'
+          - task: charleszipp.azure-pipelines-tasks-terraform.azure-pipelines-tasks-terraform-cli.TerraformCLI@0
+            displayName: 'terraform plan'
+            inputs:
+              command: plan
+              workingDirectory: $(Pipeline.Workspace)/terraform_out
+              environmentServiceName: 'Azure SPN'
+              secureVarsFile: 'aks_conf.tfvars'
+              commandOptions: '-out $(Pipeline.Workspace)/terraform_out/terraform_aks_out'
+              terraformVersion: 0.12.6
+          - task: charleszipp.azure-pipelines-tasks-terraform.azure-pipelines-tasks-terraform-cli.TerraformCLI@0
+            displayName: 'terraform apply'
+            inputs:
+              command: apply
+              workingDirectory: $(Pipeline.Workspace)/terraform_out
+              environmentServiceName: 'Azure SPN'
+              commandOptions: '$(Pipeline.Workspace)/terraform_out/terraform_aks_out'
+              terraformVersion: 0.12.6
