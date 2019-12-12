@@ -34,6 +34,7 @@ stages:
     - task: TerraformCLI@0
       inputs:
         command: 'init'
+        workingDirectory: '$(System.DefaultWorkingDirectory)'
         backendType: 'azurerm'
         backendServiceArm: 'test'
         backendAzureRmResourceGroupName: 'AksTerraform-test-demo'
