@@ -35,7 +35,7 @@ stages:
       displayName: 'terraform init'
       inputs:
         command: init
-        workingDirectory: akstestdemo/1-terraform
+        workingDirectory: 1-terraform
         backendType: azurerm
         backendServiceArm: 'test'
         backendAzureRmResourceGroupName: 'AksTerraform-test-demo'
