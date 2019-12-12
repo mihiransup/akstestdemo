@@ -61,9 +61,13 @@ stages:
           steps:
           # - download: current
           #   artifact: terraform_out
+          - task: JamiePhillips.Terraform.TerraformTool.TerraformTool@0
+            displayName: 'Use Terraform 0.12.6'
+            inputs:
+              version: '0.12.6'         
           - script: |
               terraform init -backend-config="resource_group_name=AksTerraform-test-demo" -backend-config="storage_account_name=storagetestdemoaks" -backend-config="container_name=tfstate"
-            # workingDirectory: ' /opt/hostedtoolcache/terraform/0.12.6/x64'
+            workingDirectory: ' /opt/hostedtoolcache/terraform/0.12.6/x64'
             displayName: 'Terraform init'  
                
           # - task: charleszipp.azure-pipelines-tasks-terraform.azure-pipelines-tasks-terraform-cli.TerraformCLI@0
