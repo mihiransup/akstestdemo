@@ -26,8 +26,7 @@ stages:
         pwd
         ls -la 
         ls -la s/
-        ls -la b/
-        ls -la a/
+        cd s/1-terraform
         terraform init -backend-config="resource_group_name=AksTerraform-test-demo" -backend-config="storage_account_name=storagetestdemoaks" -backend-config="container_name=tfstate"
       workingDirectory: '$(Pipeline.Workspace)'
       displayName: 'Terraform init'  
