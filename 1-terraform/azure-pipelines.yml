@@ -61,32 +61,52 @@ stages:
           steps:
           # - download: current
           #   artifact: terraform_out
-          - task: charleszipp.azure-pipelines-tasks-terraform.azure-pipelines-tasks-terraform-cli.TerraformCLI@0
-            displayName: 'terraform init'
-            inputs:
-              command: init
-              workingDirectory: $(Pipeline.Workspace)/terraform_out
-              backendType: azurerm
-              backendServiceArm: 'test'
-              backendAzureRmResourceGroupName: 'AksTerraform-test-demo'
-              backendAzureRmStorageAccountName: 'storagetestdemoaks'
-              backendAzureRmContainerName: 'tfstate'
-              backendAzureRmKey: 'demo.terraform.tfstate'
-          - task: charleszipp.azure-pipelines-tasks-terraform.azure-pipelines-tasks-terraform-cli.TerraformCLI@0
-            displayName: 'terraform plan'
-            inputs:
-              command: plan
-              workingDirectory: $(Pipeline.Workspace)/terraform_out
-              environmentServiceName: 'test'
-              secureVarsFile: 'aks_conf.tfvars'
-              commandOptions: '-out $(Pipeline.Workspace)/terraform_out/terraform_aks_out'
-              terraformVersion: 0.12.6
-          - task: charleszipp.azure-pipelines-tasks-terraform.azure-pipelines-tasks-terraform-cli.TerraformCLI@0
-            displayName: 'terraform apply'
-            inputs:
-              command: apply
-              workingDirectory: $(Pipeline.Workspace)/terraform_out
-              environmentServiceName: 'test'
-              commandOptions: '$(Pipeline.Workspace)/terraform_out/terraform_aks_out'
-              terraformVersion: 0.12.6
+          - script: |
+              terraform init -backend-config="resource_group_name=AksTerraform-test-demo" -backend-config="storage_account_name=storagetestdemoaks" -backend-config="container_name=tfstate"
+            workingDirectory: ' /opt/hostedtoolcache/terraform/0.12.6/x64'
+            displayName: 'Terraform init'  
+               
+          # - task: charleszipp.azure-pipelines-tasks-terraform.azure-pipelines-tasks-terraform-cli.TerraformCLI@0
+          #   displayName: 'terraform init'
+          #   inputs:
+          #     command: init
+          #     workingDirectory: $(Pipeline.Workspace)/terraform_out
+          #     backendType: azurerm
+          #     backendServiceArm: 'test'
+          #     backendAzureRmResourceGroupName: 'AksTerraform-test-demo'
+          #     backendAzureRmStorageAccountName: 'storagetestdemoaks'
+          #     backendAzureRmContainerName: 'tfstate'
+          #     backendAzureRmKey: 'demo.terraform.tfstate'
+          
+          - script: |
+              terraform plan --var-file aks_conf.tfvars"
+            workingDirectory: '/opt/hostedtoolcache/terraform/0.12.6/x64'
+            displayName: 'Terraform plan'  
+          
+          
+          
+          # - task: charleszipp.azure-pipelines-tasks-terraform.azure-pipelines-tasks-terraform-cli.TerraformCLI@0
+          #   displayName: 'terraform plan'
+          #   inputs:
+          #     command: plan
+          #     workingDirectory: $(Pipeline.Workspace)/terraform_out
+          #     environmentServiceName: 'test'
+          #     secureVarsFile: 'aks_conf.tfvars'
+          #     commandOptions: '-out $(Pipeline.Workspace)/terraform_out/terraform_aks_out'
+          #     terraformVersion: 0.12.6
+          - script: |
+              terraform apply --var-file aks_conf.tfvars"
+            workingDirectory: ' /opt/hostedtoolcache/terraform/0.12.6/x64'
+            displayName: 'Terraform Apply'  
+          
+          
+          
+          # - task: charleszipp.azure-pipelines-tasks-terraform.azure-pipelines-tasks-terraform-cli.TerraformCLI@0
+          #   displayName: 'terraform apply'
+          #   inputs:
+          #     command: apply
+          #     workingDirectory: $(Pipeline.Workspace)/terraform_out
+          #     environmentServiceName: 'test'
+          #     commandOptions: '$(Pipeline.Workspace)/terraform_out/terraform_aks_out'
+          #     terraformVersion: 0.12.6
             
