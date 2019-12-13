@@ -1,6 +1,6 @@
 data "azurerm_key_vault" "terraform_vault" {
-  name                = keyvaulttestingdemo
-  resource_group_name = AksTerraform-RG
+  name                = "keyvaulttestingdemo"
+  resource_group_name = "AksTerraform-RG"
 }
 
 data "azurerm_key_vault_secret" "ssh_public_key" {
