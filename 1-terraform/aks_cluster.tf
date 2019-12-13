@@ -8,7 +8,7 @@ resource "azurerm_kubernetes_cluster" "aks_k2" {
   location            = azurerm_resource_group.aks_demo_rg.location
   resource_group_name = azurerm_resource_group.aks_demo_rg.name
   dns_prefix          = var.dns_name
-  kubernetes_version  = var.kubernetes_version
+  kubernetes_version  = "1.12.7"
 
   dynamic "agent_pool_profile" {
     for_each = var.agent_pools
