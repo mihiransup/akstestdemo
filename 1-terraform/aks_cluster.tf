@@ -1,6 +1,6 @@
 resource "azurerm_resource_group" "aks_demo_rg" {
   name     = "AksTerraform-RG"
-  location = "eastus"
+  location = "eastus2"
 }
 
 resource "azurerm_kubernetes_cluster" "aks_k2" {
